@@ -31,22 +31,42 @@ const Home=()=>{
     },[data])
 
     useEffect(()=>{ 
-        // fetch('https://api.thenewsapi.com/v1/news/top?api_token=srWMAUnuzQ2FmrvQci5dQCuODqbbVbHO2aPIz1qm')
-        //     .then(res=>res.json())
-        //     .then(res=>{
-        //         setNews(res.data)
-        //     });
+        fetch('https://api.thenewsapi.com/v1/news/top?api_token=srWMAUnuzQ2FmrvQci5dQCuODqbbVbHO2aPIz1qm')
+            .then(res=>res.json())
+            .then(res=>{  console.log('news', res.data)
+                setNews(res.data)
+            });
     },[])
     
     return(
         <div className="container mt-5">
             <div className="row">
                 <div className="col-sm-3">
-                    {news? news.map((item, index)=><div key={index}>{item.title}</div>) : 'Loading...'}
+                    {/* {news? news.map((item, index)=><div key={index}>{item.title}</div>) : 'Loading...'} */}
+                    {news? news.map((item, index)=>{
+                        return <div className="card" key={index}>
+                        <div className="card-header">
+                            <span className="text-left">
+                                <a href={item.url} target="_blank">
+                                    {item.title}
+                                </a>  <br />
+                            {moment(new Date(item.published_at)).fromNow()}
+
+                                {/* {item.published_at} */}
+                            </span>
+
+                        </div>
+                        <div className="card-body">
+                            <img src={item.image_url} alt="newsimage" height="50" width="50" />
+                            {item.description}
+                        </div>
+                    </div>
+                    }) : 'Loading...'}
+
                 </div>
                 {/* <div className="col-sm-1"></div> */}
                 <div className="col-sm-9">
-                    <table className="table table-striped">
+                    <table className="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <td>Full Name</td>
